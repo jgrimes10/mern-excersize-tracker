@@ -34,5 +34,29 @@ router.route('/').post((req, res) => {
     });
 });
 
+// GET exercise by id
+router.route('/:id').get((req, res) => {
+    Exercise.findById(req.params.id)
+        .then(exercise => res.status(200).json(exercise))
+        .catch(err => res.status(400).json(`Error: ${err}`));
+});
+
+// DELETE exercise by id
+router.route('/:id').delete((req, res) => {
+    Exercise.findByIdAndDelete(req.params.id)
+        .then(() => res.status(204))
+        .catch(err => res.status(400).json(`Error: ${err}`));
+});
+
+// PUT exercise by id
+router.route('/:id').put((req, res) => {
+    Exercise.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, newObj) => {
+        if (err)
+            return res.status(400).json(`Error: ${err}`);
+
+        return res.status(200).json(newObj);
+    });
+});
+
 // export router
 module.exports = router;
